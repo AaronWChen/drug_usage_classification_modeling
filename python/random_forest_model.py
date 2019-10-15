@@ -16,13 +16,17 @@ def bag_model(df, target, depth, samples):
 
     rt = DecisionTreeRegressor(random_state=1, max_depth=depth)
 
+    rf = RandomForestRegressor(n_estimators=100, max_features='sqrt', random_state=1)
+
     bag = BaggingRegressor(n_estimators=100,
                        max_features=X.shape[1],
                        max_samples=samples,
                        random_state=1)
 
     rt.fit(X_train, y_train)
+    rf.fit(X_train, y_train)
     bag.fit(X_train, y_train)
 
-    return f"""Random Tree Score = {rt.score(X_test, y_test)}, ---
-    Bagging Score = {bag.score(X_test, y_test)}"""
+    return f"""Decision Tree Score = {rt.score(X_test, y_test)}, ---
+    Bagging Score = {bag.score(X_test, y_test)}, --- Random Forest Score
+    {rf.score(X_test, y_test)}"""
